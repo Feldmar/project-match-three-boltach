@@ -1,14 +1,7 @@
 'use strict';
+let div = document.getElementsByTagName('div')[0];
+
 let gameMenu = function() {
-  let div = document.getElementsByTagName('div')[0];
-
-  let newGameBTN = document.createElement('button');
-  div.appendChild(newGameBTN);
-  newGameBTN.innerHTML = 'New Game';
-  newGameBTN.addEventListener ('click', function() {
-    alert('newGameBTN');
-  });
-
   let recordsTableBTN = document.createElement('button');
   div.appendChild(recordsTableBTN);
   recordsTableBTN.innerHTML = 'TOP';
@@ -39,4 +32,15 @@ let gameMenu = function() {
 
 
 };
+
+
 document.addEventListener('DOMContentLoaded', gameMenu);
+let newGameButton = function() {
+  let newGameBTN = document.createElement('button');
+  div.appendChild(newGameBTN);
+  newGameBTN.innerHTML = 'New Game';
+  newGameBTN.addEventListener ('click', function() {
+    alert('newGameBTN');
+  });  
+};
+document.addEventListener('DOMContentLoaded', newGameButton);
