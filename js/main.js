@@ -11,6 +11,9 @@ let config = {
 	score: 0,
 	countRows: 6,
 	countCols: 6,
+  cellHeight: 50,
+  cellWidth: 50,
+  tiles:[],
 	canvas: null,
   ctx: null,
 	width: 0,
@@ -29,7 +32,7 @@ let config = {
     this.canvas = document.getElementById('mycanvas');
     this.ctx = this.canvas.getContext('2d');
     this.initDimensions();
-    this.setTextFont();
+    
   },
 	initDimensions(data) {
     data = {
@@ -43,3 +46,13 @@ let config = {
 
 }
 };
+
+function initilize() {
+  for (let i=0; i<config.countCols; i++) {
+    config.tiles[i] = [];
+    for (let j=0; j<config.countRows; j++) {
+      config.tiles[i][j] = { type: 0, shift:0 };
+    }
+  }
+}
+initilize();
