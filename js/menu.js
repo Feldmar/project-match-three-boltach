@@ -1,12 +1,43 @@
 'use strict';
-let div = document.getElementsByTagName('div')[0];
 
-let gameMenu = function() {
-  let recordsTableBTN = document.createElement('button');
+import {game} from './main.js';
+
+export let div = document.getElementById('div');
+export  let per = document.createElement('div');
+div.appendChild(per);
+
+function gameButton() {
+   
+	let newGameBTN = document.createElement('button');
+  div.appendChild(newGameBTN);
+  newGameBTN.innerHTML = 'New Game';
+  newGameBTN.addEventListener ('click', function() {
+		
+		let canvasTag = document.createElement('canvas');
+		per.appendChild(canvasTag);
+
+		canvasTag.setAttribute('width', '505');
+		canvasTag.setAttribute('height', '505');
+		canvasTag.setAttribute('id','mycanvas');
+		game(); 
+
+		newGameBTN.addEventListener ('click', function() {
+			while (per.firstChild) {
+				per.removeChild(per.firstChild);
+				
+			}
+			// newGameBTN.addEventListener ('click', function() {
+			// 	per.appendChild(canvasTag);
+			// 	game();
+			// }); 
+  	}); 
+	}); 
+	
+	let recordsTableBTN = document.createElement('button');
   div.appendChild(recordsTableBTN);
   recordsTableBTN.innerHTML = 'TOP';
   recordsTableBTN.addEventListener ('click', function() {
-    window.open('./articles/top.html','_self');
+    
   });
 
   let manualBTN = document.createElement('button');
@@ -14,7 +45,7 @@ let gameMenu = function() {
   
   manualBTN.innerHTML = 'Manual';
   manualBTN.addEventListener ('click', function() {
-    window.open('./articles/manual.html','_self');
+    
   });
 
 
@@ -26,19 +57,6 @@ let gameMenu = function() {
     alert('exitBTN');
   });
 
+}
+gameButton();
 
-};
-
-
-document.addEventListener('DOMContentLoaded', gameMenu);
-let newGameButton = function() {
-  let newGameBTN = document.createElement('button');
-  
-  div.appendChild(newGameBTN);
-  newGameBTN.innerHTML = 'New Game';
-  newGameBTN.addEventListener ('click', function() {
-    window.open('./articles/newgame.html','_self');
-  });  
-  
-};
-document.addEventListener('DOMContentLoaded', newGameButton);

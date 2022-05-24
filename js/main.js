@@ -1,6 +1,9 @@
 'use strict';
 
-window.onload = function() {
+import {div} from './menu.js';
+import {per} from './menu.js';
+
+ export function game() {
 	let canvas = document.getElementById('mycanvas');
 	let ctx = canvas.getContext('2d');
 	
@@ -134,7 +137,7 @@ window.onload = function() {
 								
 					if (coincidences.length > 0) {
 						// Добавляем очки к счету
-							rrr();
+							countingScore();
 							
 									
 						// совпадения найдены, удаляем их
@@ -208,21 +211,24 @@ window.onload = function() {
 
 
 	//делаем скор
-	let div = document.getElementById('div');
 	function createScore(){
 		let scoreTXT = document.createElement('span');
-		div.appendChild(scoreTXT);
+		per.appendChild(scoreTXT);
 		scoreTXT.innerHTML = `SCORE:`;
 
 	}
 	createScore();
 
 	//подсчет скора
-	function rrr(){
+	
+	function countingScore(){
 		for (let i = 0; i < coincidences.length; i++) {
-		score=score += 100;
-		console.log(score);
+			score=score += 100;
+			console.log(score);
 		}
+		let scoreSpan = document.createElement('span');
+  	div.appendChild(scoreSpan);
+		scoreSpan.setAttribute('id','span');
 		document.getElementById('span').innerHTML = score;
 	}
 		
@@ -735,4 +741,6 @@ window.onload = function() {
 	}
 	
 	init();
-};
+
+
+}
