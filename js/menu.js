@@ -6,22 +6,18 @@ let gameMenu = function() {
   div.appendChild(recordsTableBTN);
   recordsTableBTN.innerHTML = 'TOP';
   recordsTableBTN.addEventListener ('click', function() {
-    alert('recordsTableBTN');
+    window.open('./articles/top.html','_self');
   });
 
   let manualBTN = document.createElement('button');
   div.appendChild(manualBTN);
+  
   manualBTN.innerHTML = 'Manual';
   manualBTN.addEventListener ('click', function() {
-    alert('manualBTN');
+    window.open('./articles/manual.html','_self');
   });
 
-  let aboutBTN = document.createElement('button');
-  div.appendChild(aboutBTN);
-  aboutBTN.innerHTML = 'About';
-  aboutBTN.addEventListener ('click', function() {
-    alert('aboutBTN');
-  });
+
 
   let exitBTN = document.createElement('button');
   div.appendChild(exitBTN);
@@ -37,10 +33,12 @@ let gameMenu = function() {
 document.addEventListener('DOMContentLoaded', gameMenu);
 let newGameButton = function() {
   let newGameBTN = document.createElement('button');
+  
   div.appendChild(newGameBTN);
   newGameBTN.innerHTML = 'New Game';
   newGameBTN.addEventListener ('click', function() {
-    alert('newGameBTN');
+    window.open('./articles/newgame.html','_self');
   });  
+  
 };
 document.addEventListener('DOMContentLoaded', newGameButton);
