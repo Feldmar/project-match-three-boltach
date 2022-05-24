@@ -1,6 +1,5 @@
 'use strict';
 
-import {div} from './menu.js';
 import {per} from './menu.js';
 
  export function game() {
@@ -227,7 +226,7 @@ import {per} from './menu.js';
 			console.log(score);
 		}
 		let scoreSpan = document.createElement('span');
-  	div.appendChild(scoreSpan);
+  	per.appendChild(scoreSpan);
 		scoreSpan.setAttribute('id','span');
 		document.getElementById('span').innerHTML = score;
 	}
