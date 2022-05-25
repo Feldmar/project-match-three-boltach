@@ -1,6 +1,6 @@
 'use strict';
 
-import {per} from './menu.js';
+import {piz} from './menu.js';
 
  export function game() {
 	let canvas = document.getElementById('mycanvas');
@@ -212,7 +212,7 @@ import {per} from './menu.js';
 	//делаем скор
 	function createScore(){
 		let scoreTXT = document.createElement('span');
-		per.appendChild(scoreTXT);
+		piz.appendChild(scoreTXT);
 		scoreTXT.innerHTML = `SCORE:`;
 
 	}
@@ -226,7 +226,7 @@ import {per} from './menu.js';
 			console.log(score);
 		}
 		let scoreSpan = document.createElement('span');
-  	per.appendChild(scoreSpan);
+  	piz.appendChild(scoreSpan);
 		scoreSpan.setAttribute('id','span');
 		document.getElementById('span').innerHTML = score;
 	}
