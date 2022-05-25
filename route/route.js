@@ -1,94 +1,28 @@
 'use strict';
 
-function Route(name, htmlName, defaultRoute) {
-    try {
-        if(!name || !htmlName) {
-            throw 'error: name and htmlName params are mandatories';
-        }
-        this.constructor(name, htmlName, defaultRoute);
-    } catch (e) {
-        console.error(e);
-    }
-}
-
-Route.prototype = {
-    name: undefined,
-    htmlName: undefined,
-    default: undefined,
-    constructor: function (name, htmlName, defaultRoute) {
-        this.name = name;
-        this.htmlName = htmlName;
-        this.default = defaultRoute;
-    },
-    isActiveRoute: function (hashedPath) {
-        return hashedPath.replace('#', '') === this.name; 
-    }
+const route = (event) => {
+    event = event || window.event;
+    event.preventDefault();
+    window.history.pushState({}, "", event.target.href);
+    handleLocation();
 };
-function Router(routes) {
-    try {
-        if (!routes) {
-            throw 'error: routes param is mandatory';
-        }
-        this.constructor(routes);
-        this.initializ();
-    } catch (e) {
-        console.error(e);   
-    }
-}
 
-Router.prototype = {
-    routes: undefined,
-    rootElem: undefined,
-    constructor: function (routes) {
-        this.routes = routes;
-        this.rootElem = document.getElementById('div');
-    },
-    initializ: function () {
-        let r = this.routes;
-        (function(scope, r) { 
-            window.addEventListener('hashchange', function (e) {
-                scope.hasChanged(scope, r);
-            });
-        })(this, r);
-        this.hasChanged(this, r);
-    },
-    hasChanged: function(scope, r){
-        if (window.location.hash.length > 0) {
-            for (let i = 0, length = r.length; i < length; i++) {
-                let route = r[i];
-                if(route.isActiveRoute(window.location.hash.substr(1))) {
-                    scope.goToRoute(route.htmlName);
-                }
-            }
-        } else {
-            for (let i = 0, length = r.length; i < length; i++) {
-                let route = r[i];
-                if(route.default) {
-                    scope.goToRoute(route.htmlName);
-                }
-            }
-        }
-    },
-    goToRoute: function (htmlName) {
-        (function(scope) { 
-            let url = 'views/' + htmlName,
-                xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function () {
-                if (this.readyState === 4 && this.status === 200) {
-                    scope.rootElem.innerHTML = this.responseText;
-                }
-            };
-            xhttp.open('GET', url, true);
-            xhttp.send();
-        })(this);
-    }
+const routes = {
+    
+    // 404: "/pages/404.html",
+    "/newgame": "/views/newgame.html",
+    "/top": "/views/top.html",
+    "/manual": "/views/manual.html",
 };
-(function () {
-    function initializ() {
-        let router = new Router([
-            new Route('manual', 'manual.html'),            
-            new Route('top', 'top.html')
-        ]);
-    }
-    initializ();
-}());
+
+const handleLocation = async () => {
+    const path = window.location.pathname;
+    const route = routes[path] || routes[404];
+    const html = await fetch(route).then((data) => data.text());
+    document.getElementById("div").innerHTML = html;
+};
+
+window.onpopstate = handleLocation;
+window.route = route;
+
+handleLocation();
