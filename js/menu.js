@@ -1,10 +1,10 @@
 'use strict';
 
-import {game} from './main.js';
+// import {game} from './main.js';
 
 export let div = document.getElementById('div');
-export let per = document.createElement('div');
-div.appendChild(per);
+// export let per = document.createElement('div');
+// div.appendChild(per);
 
 // function gameButton() {
    
@@ -43,3 +43,11 @@ div.appendChild(per);
 // gameButton();
 
 
+window.onload = function() {
+  let BTN = document.createElement('ul');
+  div.appendChild(BTN);
+  BTN.setAttribute('id','lox');
+  BTN.innerHTML = `<li><a href ="#newgame">NewGame</a></li>
+  <li><a href ="#top">TOP</a></li>
+  <li><a href ="#manual">Manual</a></li>`;
+};

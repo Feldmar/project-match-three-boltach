@@ -1,28 +1,26 @@
 'use strict';
 
-const route = (event) => {
-    event = event || window.event;
-    event.preventDefault();
-    window.history.pushState({}, "", event.target.href);
-    handleLocation();
+function Route(name, htmlName, defaultRoute) {
+    try {
+        if(!name || !htmlName) {
+            throw 'error: name and htmlName params are mandatories';
+        }
+        this.constructor(name, htmlName, defaultRoute);
+    } catch (e) {
+        console.error(e);
+    }
+}
+
+Route.prototype = {
+    name: undefined,
+    htmlName: undefined,
+    default: undefined,
+    constructor: function (name, htmlName, defaultRoute) {
+        this.name = name;
+        this.htmlName = htmlName;
+        this.default = defaultRoute;
+    },
+    isActiveRoute: function (hashedPath) {
+        return hashedPath.replace('#', '') === this.name; 
+    }
 };
-
-const routes = {
-    
-    // 404: "/pages/404.html",
-    "/newgame": "/views/newgame.html",
-    "/top": "/views/top.html",
-    "/manual": "/views/manual.html",
-};
-
-const handleLocation = async () => {
-    const path = window.location.pathname;
-    const route = routes[path] || routes[404];
-    const html = await fetch(route).then((data) => data.text());
-    document.getElementById("div").innerHTML = html;
-};
-
-window.onpopstate = handleLocation;
-window.route = route;
-
-handleLocation();
