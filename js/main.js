@@ -1,8 +1,16 @@
 'use strict';
 
-import {piz} from './menu.js';
+export let piz = document.querySelector('#piz');
 
  export function game() {
+  let canvasTag = document.createElement('canvas');
+	piz.appendChild(canvasTag);
+	canvasTag.setAttribute('width', '505');
+	canvasTag.setAttribute('height', '505');
+	canvasTag.setAttribute('id','mycanvas');
+  
+	
+
 	let canvas = document.getElementById('mycanvas');
 	let ctx = canvas.getContext('2d');
 	
