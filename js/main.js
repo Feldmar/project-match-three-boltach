@@ -2,16 +2,16 @@
 
  let piz = document.getElementById('piz');
  
-let c = document.querySelector('canvas');
-if (c === true){
-	game();
-} else if (c === false){
-console.log('no');
-}
 
 
+
+game();
 function game(){
-	let canvas = document.getElementById('mycanvas');
+	let canvas = document.getElementById('mycanvas'); 
+	if (!canvas) {
+    console.log('no');
+    return;
+  }
 	let ctx = canvas.getContext('2d');
 	
 	let lastframe = 0;
