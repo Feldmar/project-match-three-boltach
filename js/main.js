@@ -265,6 +265,8 @@ game();
 					ctx.fillStyle = '#ffffff';
 					ctx.font = '24px Verdana';
 					drawCenterText('Game Over!', config.y, config.x + levelheight / 2 + 10, levelwidth);
+
+				
 			}
 	}
 	

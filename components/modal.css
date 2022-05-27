@@ -1,75 +1,28 @@
-.modal
-  display: none
-
-  /* Скрыто по умолчанию
-  position: fixed
-
-  /* Оставаться на месте
-  z-index: 1
-
-  /* Сидеть на вершине
-  padding-top: 100px
-
-  /* Расположение коробки
-  left: 0
-  top: 0
-  width: 100%
-
-  /* Полная ширина
-  height: 100%
-
-  /* Полная высота
-  overflow: auto
-
-  /* Включите прокрутку, если это необходимо
+.modal{
+  display: none;
+  position: fixed;
+  z-index: 1;
+  padding-top: 100px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
   backdrop-filter: blur(2px);
+  background-color: rgba(0, 0, 0, 0.4);
+}
 
-  /* Цвет запасной вариант
-  background-color: rgba(0, 0, 0, 0.4)
-
-  /*Черный с непрозрачностью
-/* Модальное содержание
-.modal-content
-  background-image: url(../images/mandals.jpg)
+.modal-content{
   backdrop-filter: blur(2px);
-  background-repeat: no-repeat
-  background-size: 
-  background-position: center
-  margin: auto
-  padding: 50px
-  border: 2px solid #67d402
-  border-radius: 15px
-  width: 25%
-
-/* Кнопка закрытия
-.close
-  color: #000000
-  float: right
-  font-size: 28px
-  font-weight: bold
-
-  &:hover, &:focus
-    color: #f7f7f7
-    text-decoration: none
-    cursor: pointer
-.modal-title
-    font-family: $font-heebo
-    color: $green
-#submit
-    margin-top: 20px
-    background-color: $green
-    color: #000000
-    padding: 5px
-    border-radius: 5px
-.titles
-    font-family: $font-heebo
-    color: #000000
-@media screen and (max-width: 1200px)
-  .modal-content
-    width: 35%
-@media screen and (max-width: 768px)
-  .modal-content
-    width: 55%
-@media screen and (max-width: 576px)
-  .modal-content
-    width: 85%
+  margin: auto;
+  padding: 50px;
+  border: 2px solid #67d402;
+  border-radius: 15px;
+  width: 25%;
+}
+.close {
+  color: #000000;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
