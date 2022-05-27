@@ -1,16 +1,16 @@
 'use strict';
 
-export let piz = document.querySelector('#piz');
+ let piz = document.getElementById('piz');
+ 
+let c = document.querySelector('canvas');
+if (c === true){
+	game();
+} else if (c === false){
+console.log('no');
+}
 
- export function game() {
-  let canvasTag = document.createElement('canvas');
-	piz.appendChild(canvasTag);
-	canvasTag.setAttribute('width', '505');
-	canvasTag.setAttribute('height', '505');
-	canvasTag.setAttribute('id','mycanvas');
-  
-	
 
+function game(){
 	let canvas = document.getElementById('mycanvas');
 	let ctx = canvas.getContext('2d');
 	
