@@ -1,12 +1,13 @@
 'use strict';
+import{game} from '../js/main.js';
 
-function Router(routes) {
+ export function Router(routes) {
     try {
         if (!routes) {
             throw 'error: routes param is mandatory';
         }
         this.constructor(routes);
-        this.init();
+        this.initialization();
     } catch (e) {
         console.error(e);   
     }
@@ -19,8 +20,8 @@ Router.prototype = {
         this.routes = routes;
         this.rootElem = document.getElementById('piz');
     },
-    init: function () {
-        var r = this.routes;
+    initialization: function () {
+        let r = this.routes;
         (function(scope, r) { 
             window.addEventListener('hashchange', function (e) {
                 scope.hasChanged(scope, r);
@@ -30,15 +31,15 @@ Router.prototype = {
     },
     hasChanged: function(scope, r){
         if (window.location.hash.length > 0) {
-            for (var i = 0, length = r.length; i < length; i++) {
-                var route = r[i];
+            for (let i = 0, length = r.length; i < length; i++) {
+                let route = r[i];
                 if(route.isActiveRoute(window.location.hash.substr(1))) {
                     scope.goToRoute(route.htmlName);
                 }
             }
         } else {
-            for (var i = 0, length = r.length; i < length; i++) {
-                var route = r[i];
+            for (let i = 0, length = r.length; i < length; i++) {
+                let route = r[i];
                 if(route.default) {
                     scope.goToRoute(route.htmlName);
                 }
@@ -47,7 +48,7 @@ Router.prototype = {
     },
     goToRoute: function (htmlName) {
         (function(scope) { 
-            var url = './views/' + htmlName,
+            let url = './views/' + htmlName,
                 xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {
                 if (this.readyState === 4 && this.status === 200) {

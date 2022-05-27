@@ -6,7 +6,7 @@
 
 
 game();
-function game(){
+ export function game(){
 	let canvas = document.getElementById('mycanvas'); 
 	if (!canvas) {
     console.log('no');
