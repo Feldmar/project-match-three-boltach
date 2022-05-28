@@ -231,6 +231,9 @@ game();
 		for (let i = 0; i < coincidences.length; i++) {
 			score=score += 100;
 			console.log(score);
+			var song = new Audio();
+				song.src = './audio/scrr.mp3';
+				song.play();
 		}
 		let scoreSpan = document.createElement('span');
   	piz.appendChild(scoreSpan);
