@@ -4,7 +4,6 @@
  
 
 
-
 game();
  export function game(){
 	let canvas = document.getElementById('mycanvas'); 
@@ -239,6 +238,46 @@ game();
 		document.getElementById('span').innerHTML = score;
 	}
 		
+
+
+
+function save(){
+	var modal = document.getElementById('myModal');
+var btn = document.getElementById('myBtn');
+var span = document.getElementsByClassName('close')[0];
+btn.onclick = function() {
+  modal.style.display = 'block';
+};
+
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = 'none';
+  }
+};
+
+}
+save();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	function drawCenterText(text, x, y, width) {
 		let textdim = ctx.measureText(text);
 		ctx.fillText(text, x + (width-textdim.width)/2, y);
