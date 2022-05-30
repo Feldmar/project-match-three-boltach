@@ -6,16 +6,66 @@ let replaceBackground = function () {
 };
 document.addEventListener('DOMContentLoaded', replaceBackground);
 
-// import{drinkStorage} from './main.js';
-// export function showDrinksMenu() {
-//   var showMenuInfo = drinkStorage.getKeys();
 
 
-//   // if (showMenuInfo) {
-//   //   for (var i = 0; i < showMenuInfo; i++) {
-//   //     showMenuInfo += (i + 1) + '. ' + showMenuInfo[i] + '<br>';
-//   //   }
-//   // } 
-//   document.getElementById('message').innerHTML =  showMenuInfo;
+
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', () =>{
+  function req(){
+    // const request = new XMLHttpRequest();
+    // request.open('GET',' http://localhost:3000/users');
+    // request.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+    // request.send();
+    // request.addEventListener('load', function(){
+    //   if(request.status == 200){
+    //     let data = JSON.parse(request.response);
+    //     console.log(data);
+    //     createLeaderboard(data);
+    //   } else {
+    //     console.error('gbplf');
+    //   }
+    // });
+    getResourse('https://fe.it-academy.by/AjaxStringStorage2.php')
+  
+    .then(data => createLeaderboard(data.data))
+    .catch(err => console.error(err));
+
+  }
+  req();
+
+//  async function getResourse(url){
+//   const res = await fetch(`${url}`);
+
+//   if(!res.ok){
+//     throw new Error(`fetch ${url} failed, status ${res.status}`);
+
+//   }
+
+//   return await res.json();
 // }
-// showDrinksMenu();
+
+async function getResourse(url){
+  const res = await axios(`${url}`);
+
+  if(res.status!==200){
+    throw new Error(`fetch ${url} failed, status ${res.status}`);
+
+  }
+
+  return  res;
+}
+  function createLeaderboard(response){
+    response.forEach(item =>{
+      let card = document.createElement('div');
+      card.innerHTML = `
+      <span id="name">User: ${item.name}</span>,
+      <span id="name">Score: ${item.score}</span>
+      `;
+      document.querySelector('#leaderboard').appendChild(card);
+      });
+  }
+});

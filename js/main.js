@@ -1,9 +1,7 @@
 'use strict';
 
 let piz = document.getElementById('piz');
-import{TAJAXStorage} from './ajax.js';
-export var drinkStorage = new TAJAXStorage('DRINK');
-
+let scoreStorage = new AJAXStorage();
 game();
 export function game() {
 	let canvas = document.getElementById('mycanvas');
@@ -20,8 +18,8 @@ export function game() {
 	let config = {
 		y: 2, // вертикальный отступ
 		x: 2, // горизонтальный отступ
-		columns: 10, // Кол-во столбцов
-		rows: 10, // Кол-во рядов
+		columns: 9, // Кол-во столбцов
+		rows: 9, // Кол-во рядов
 		stoneWidth: 50, // ширина камешка
 		stoneHeight: 50, // высота камешка
 		stone: [], // двумерный массив камешков
@@ -262,43 +260,15 @@ export function game() {
 
 
 
-	function save() {
-		var modal = document.getElementById('myModal');
-		var btn = document.getElementById('myBtn');
-		btn.onclick = function () {
-			modal.style.display = 'block';
-		};
-
-		window.onclick = function (event) {
-			if (event.target == modal) {
-				modal.style.display = 'none';
-			}
-		};
-
-	}
-	save();
+	
+if(gameover === true) {
 
 
+		let user = prompt('GAME OVER. Enter your name', '').trim();
+		
+	
 
-
-
-
-
-
-
-
-
-	// function addDrink() {
-	// 	var UserName = prompt('Введите ваше имя', '');
-	// 	var fHash = {};
-	// 	fHash = score;
-	// 	if (UserName) {
-	// 		return drinkStorage.addValue(UserName, fHash);
-	// 	} else {
-	// 		alert('Ввод отменен!');
-	// 	}
-	// }
-	// addDrink();
+}
 
 
 
