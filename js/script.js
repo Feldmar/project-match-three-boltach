@@ -11,61 +11,53 @@ document.addEventListener('DOMContentLoaded', replaceBackground);
 
 
 
+// const nameIn = document.getElementById("email");
+// const scoreInp = document.getElementById("password");
+// const btn = document.getElementById("btn");
+
+// btn.addEventListener("click", () => {
+//   const name = nameIn.value;
+//   const score = scoreInp.value;
+
+//   axios.post("http://fe.it-academy.by/AjaxStringStorage2.php", {
+//       name: name,
+//       score: score
+//     })
+//     .then((response) => {
+//       console.log(response);
+//     });
+// });
 
 
-
-document.addEventListener('DOMContentLoaded', () =>{
-  function req(){
-    // const request = new XMLHttpRequest();
-    // request.open('GET',' http://localhost:3000/users');
-    // request.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
-    // request.send();
-    // request.addEventListener('load', function(){
-    //   if(request.status == 200){
-    //     let data = JSON.parse(request.response);
-    //     console.log(data);
-    //     createLeaderboard(data);
-    //   } else {
-    //     console.error('gbplf');
-    //   }
-    // });
-    getResourse('https://fe.it-academy.by/AjaxStringStorage2.php')
+// document.addEventListener('DOMContentLoaded', () =>{
+//   function req(){
+//     getResourse('https://fe.it-academy.by/AjaxStringStorage2.php')
   
-    .then(data => createLeaderboard(data.data))
-    .catch(err => console.error(err));
+//     .then(data => createLeaderboard(data.data))
+//     .catch(err => console.error(err));
 
-  }
-  req();
+//   }
+//   req();
+  
 
-//  async function getResourse(url){
-//   const res = await fetch(`${url}`);
+// async function getResourse(url){
+//   const res = await axios(`${url}`);
 
-//   if(!res.ok){
+//   if(res.status!==200){
 //     throw new Error(`fetch ${url} failed, status ${res.status}`);
 
 //   }
 
-//   return await res.json();
+//   return  res;
 // }
-
-async function getResourse(url){
-  const res = await axios(`${url}`);
-
-  if(res.status!==200){
-    throw new Error(`fetch ${url} failed, status ${res.status}`);
-
-  }
-
-  return  res;
-}
-  function createLeaderboard(response){
-    response.forEach(item =>{
-      let card = document.createElement('div');
-      card.innerHTML = `
-      <span id="name">User: ${item.name}</span>,
-      <span id="name">Score: ${item.score}</span>
-      `;
-      document.querySelector('#leaderboard').appendChild(card);
-      });
-  }
-});
+//   function createLeaderboard(response){
+//     response.forEach(item =>{
+//       let card = document.createElement('div');
+//       card.innerHTML = `
+//       <span id="name">User: ${item.name}</span>,
+//       <span id="name">Score: ${item.score}</span>
+//       `;
+//       document.querySelector('#leaderboard').appendChild(card);
+//       });
+//   }
+// });

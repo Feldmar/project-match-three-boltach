@@ -1,7 +1,8 @@
 'use strict';
 
 let piz = document.getElementById('piz');
-let scoreStorage = new AJAXStorage();
+import {ZAJAXStorage} from './ajax.js';
+let scoresStorage = new ZAJAXStorage();
 game();
 export function game() {
 	let canvas = document.getElementById('mycanvas');
@@ -91,8 +92,8 @@ export function game() {
 		canvas.height = 405;
 	}
 	if (bodyWidth <= 513) {
-		config.columns = 6;
-		config.rows = 6;
+		config.columns = 4;
+		config.rows = 4;
 		canvas.width = 305;
 		canvas.height = 305;
 	}
@@ -257,20 +258,96 @@ export function game() {
 		document.getElementById('span').innerHTML = score;
 	}
 
-
-
-
-	
-if(gameover === true) {
-
-
-		let user = prompt('GAME OVER. Enter your name', '').trim();
+function ajax(){
+		let user = prompt('GHb','');
+		let scores = score;
+		scoresStorage.addValue(user, scores);
 		
 	
-
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	// const nameIn = document.getElementById("email");
+	// const scoreInp = document.getElementById("password");
+	// const btn = document.getElementById("btn");
+	
+	// btn.addEventListener("click", () => {
+	// 	const name = nameIn.value;
+	// 	const score = scoreInp.value;
+	
+	// 	axios.post("http://fe.it-academy.by/AjaxStringStorage2.php", {
+	// 			name: name,
+	// 			score: score
+	// 		})
+	// 		.then((response) => {
+	// 			console.log(response);
+	// 			createLeaderboard(response.data)
+	// 		});
+
+			
+	// });
+	// function createLeaderboard(response){
+	// 		response.forEach(item =>{
+	// 			let card = document.createElement('div');
+	// 			card.innerHTML = `
+	// 			<span id="name">User: ${item.name}</span>,
+	// 			<span id="name">Score: ${item.score}</span>
+	// 			`;
+	// 			document.querySelector('#leaderboard').appendChild(card);
+	// 			});
+	// 	}
+	// document.addEventListener('DOMContentLoaded', () =>{
+	// 	function req(){
+	// 		getResourse('https://fe.it-academy.by/AjaxStringStorage2.php')
+		
+	// 		.then(data => createLeaderboard(data.data))
+	// 		.catch(err => console.error(err));
+	
+	// 	}
+	// 	req();
+		
+	
+	// async function getResourse(url){
+	// 	const res = await axios(`${url}`);
+	
+	// 	if(res.status!==200){
+	// 		throw new Error(`fetch ${url} failed, status ${res.status}`);
+	
+	// 	}
+	
+	// 	return  res;
+	// }
+	// 	// function createLeaderboard(response){
+	// 	// 	response.forEach(item =>{
+	// 	// 		let card = document.createElement('div');
+	// 	// 		card.innerHTML = `
+	// 	// 		<span id="name">User: ${item.name}</span>,
+	// 	// 		<span id="name">Score: ${item.score}</span>
+	// 	// 		`;
+	// 	// 		document.querySelector('#leaderboard').appendChild(card);
+	// 	// 		});
+	// 	// }
+	// });
+	
+	
+
+	
 
 
 
@@ -307,6 +384,7 @@ if(gameover === true) {
 			ctx.font = '24px Verdana';
 			drawCenterText('Game Over!', config.y, config.x + levelheight / 2 + 10, levelwidth);
 
+			ajax();
 
 		}
 	}
