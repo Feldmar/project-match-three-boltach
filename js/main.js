@@ -117,7 +117,7 @@ export function game() {
 				};
 			}
 		}
-
+		
 		// New game
 		newGame();
 		// Влезаем в основной цикл
@@ -128,7 +128,7 @@ export function game() {
 	function main(tframe) {
 		// Request animation frames
 		window.requestAnimationFrame(main);
-
+		
 		// Обновить и отрендерить игру
 		update(tframe);
 		render();
@@ -146,6 +146,7 @@ export function game() {
 			// Проверка на окончание игры
 			if (moves.length <= 0) {
 				gameover = true;
+				
 			}
 
 		} else if (gamestate == gamestates.resolve) {
@@ -258,104 +259,6 @@ export function game() {
 		document.getElementById('span').innerHTML = score;
 	}
 
-function ajax(){
-		let user = prompt('GHb','');
-		let scores = score;
-		scoresStorage.addValue(user, scores);
-		
-	
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	// const nameIn = document.getElementById("email");
-	// const scoreInp = document.getElementById("password");
-	// const btn = document.getElementById("btn");
-	
-	// btn.addEventListener("click", () => {
-	// 	const name = nameIn.value;
-	// 	const score = scoreInp.value;
-	
-	// 	axios.post("http://fe.it-academy.by/AjaxStringStorage2.php", {
-	// 			name: name,
-	// 			score: score
-	// 		})
-	// 		.then((response) => {
-	// 			console.log(response);
-	// 			createLeaderboard(response.data)
-	// 		});
-
-			
-	// });
-	// function createLeaderboard(response){
-	// 		response.forEach(item =>{
-	// 			let card = document.createElement('div');
-	// 			card.innerHTML = `
-	// 			<span id="name">User: ${item.name}</span>,
-	// 			<span id="name">Score: ${item.score}</span>
-	// 			`;
-	// 			document.querySelector('#leaderboard').appendChild(card);
-	// 			});
-	// 	}
-	// document.addEventListener('DOMContentLoaded', () =>{
-	// 	function req(){
-	// 		getResourse('https://fe.it-academy.by/AjaxStringStorage2.php')
-		
-	// 		.then(data => createLeaderboard(data.data))
-	// 		.catch(err => console.error(err));
-	
-	// 	}
-	// 	req();
-		
-	
-	// async function getResourse(url){
-	// 	const res = await axios(`${url}`);
-	
-	// 	if(res.status!==200){
-	// 		throw new Error(`fetch ${url} failed, status ${res.status}`);
-	
-	// 	}
-	
-	// 	return  res;
-	// }
-	// 	// function createLeaderboard(response){
-	// 	// 	response.forEach(item =>{
-	// 	// 		let card = document.createElement('div');
-	// 	// 		card.innerHTML = `
-	// 	// 		<span id="name">User: ${item.name}</span>,
-	// 	// 		<span id="name">Score: ${item.score}</span>
-	// 	// 		`;
-	// 	// 		document.querySelector('#leaderboard').appendChild(card);
-	// 	// 		});
-	// 	// }
-	// });
-	
-	
-
-	
-
-
-
-
-
-
-
-
 
 	function drawCenterText(text, x, y, width) {
 		let textdim = ctx.measureText(text);
@@ -366,16 +269,18 @@ function ajax(){
 	function render() {
 		// Draw the frame
 		drawFrame();
-
-
-
 		// Render clusters
 		renderstone();
+		drawerDrawer();
+		
+	
+	}
 
 
-		// Game Over overlay
-		if (gameover == true) {
-			let levelwidth = config.columns * config.stoneWidth;
+
+	function drawerDrawer(){
+		if(gameover == true) {
+				let levelwidth = config.columns * config.stoneWidth;
 			let levelheight = config.rows * config.stoneHeight;
 			ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
 			ctx.fillRect(config.x, config.y, levelwidth, levelheight);
@@ -383,11 +288,20 @@ function ajax(){
 			ctx.fillStyle = '#ffffff';
 			ctx.font = '24px Verdana';
 			drawCenterText('Game Over!', config.y, config.x + levelheight / 2 + 10, levelwidth);
-
-			ajax();
-
-		}
+			
 	}
+	}
+
+	let ajaxbtn = document.getElementById('ajaxbtn');
+	ajaxbtn.addEventListener('click', function(){
+		let user = prompt('GHb','');
+		
+		let scores = score;
+		scoresStorage.addValue(user, scores);
+	});
+
+	
+
 
 	// Draw a frame with a border
 	function drawFrame() {
