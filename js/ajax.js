@@ -1,9 +1,9 @@
 'use strict';
-export function ZAJAXStorage() {
-  var Rhash = {};
+export function AJAXstorage() {
+  var MyHash = {};
   var url = 'https://fe.it-academy.by/AjaxStringStorage2.php';
-  var updatePassword;
-  var user = 'Stura';
+  var password;
+  var user = 'Match_3_B';
 
   $.ajax(url, {
     type: 'POST',
@@ -13,14 +13,14 @@ export function ZAJAXStorage() {
       f: 'READ',
       n: user
     },
-    success: rResult,
+    success: Result,
     error: errorHandler
   });
 
-  function rResult(res) {
+  function Result(res) {
     if (res !== ' ') {
-      Rhash = JSON.parse(res.result);
-      console.log('rResult: ' + res.result);
+      MyHash = JSON.parse(res.result);
+      console.log('Result: ' + res.result);
     } else if (res === ' ') {
       $.ajax(url, {
         type: 'POST',
@@ -29,24 +29,21 @@ export function ZAJAXStorage() {
         data: {
           f: 'INSERT',
           n: user,
-          v: JSON.stringify(Rhash)
+          v: JSON.stringify(MyHash)
         },
-        success: callREs,
+        success: Call,
         error: errorHandler
-        
+
       });
 
-      function callREs(res) {
-        console.log('callREs: ' + res.result);
+      function Call(res) {
+        console.log('Call: ' + res.result);
       }
     }
-
-
-    
   }
 
-  function storeInfo(Rhash) {
-    updatePassword = Math.random();
+  function storeInfo(MyHash) {
+    password = Math.random();
 
     $.ajax(url, {
       type: 'POST',
@@ -55,7 +52,7 @@ export function ZAJAXStorage() {
       data: {
         f: 'LOCKGET',
         n: user,
-        p: updatePassword
+        p: password
       },
       success: lockGetReady,
       error: errorHandler
@@ -71,8 +68,8 @@ export function ZAJAXStorage() {
         data: {
           f: 'UPDATE',
           n: user,
-          v: JSON.stringify(Rhash),
-          p: updatePassword
+          v: JSON.stringify(MyHash),
+          p: password
         },
         success: updateReady,
         error: errorHandler
@@ -91,12 +88,12 @@ export function ZAJAXStorage() {
   var self = this;
 
   self.addValue = function (key, value) {
-    Rhash[key] = value;
-    storeInfo(Rhash);
-    
+    MyHash[key] = value;
+    storeInfo(MyHash);
+
   };
 
   self.getKeys = function () {
-    return Rhash;
+    return MyHash;
   };
 }

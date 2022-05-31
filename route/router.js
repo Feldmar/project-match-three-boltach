@@ -1,6 +1,5 @@
 'use strict';
 import {game} from '../js/main.js';
-
 import {showResult} from '../js/script.js';
 export function Router(routes) {
   try {
@@ -57,7 +56,6 @@ Router.prototype = {
         }
         showResult();
         game();
-        
       };
       xhttp.open('GET', url, true);
       xhttp.send();

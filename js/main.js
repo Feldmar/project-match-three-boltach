@@ -1,9 +1,12 @@
 'use strict';
-
 let piz = document.getElementById('piz');
-import {ZAJAXStorage} from './ajax.js';
- export let scoresStorage = new ZAJAXStorage();
-import {showResult} from './script.js';
+import {
+	AJAXstorage
+} from './ajax.js';
+export let Scorege = new AJAXstorage();
+import {
+	showResult
+} from './script.js';
 game();
 export function game() {
 	let canvas = document.getElementById('mycanvas');
@@ -53,7 +56,6 @@ export function game() {
 		column2: 0,
 		row2: 0
 	};
-
 	// Игровые события
 	let gamestates = {
 		init: 0,
@@ -64,7 +66,6 @@ export function game() {
 
 	// счет
 	let score = 0;
-
 
 	// Анимация
 	let animationstate = 0;
@@ -81,8 +82,7 @@ export function game() {
 	}
 	style();
 
-	//адаптив по-тупому
-
+	//адаптив
 	let bodyWidth = window.innerWidth;
 	let bodyHeight = window.innerHeight;
 	console.log(bodyWidth);
@@ -93,8 +93,8 @@ export function game() {
 		canvas.height = 405;
 	}
 	if (bodyWidth <= 513) {
-		config.columns = 4;
-		config.rows = 4;
+		config.columns = 6;
+		config.rows = 6;
 		canvas.width = 305;
 		canvas.height = 305;
 	}
@@ -118,7 +118,7 @@ export function game() {
 				};
 			}
 		}
-		
+
 		// New game
 		newGame();
 		// Влезаем в основной цикл
@@ -129,7 +129,6 @@ export function game() {
 	function main(tframe) {
 		// Request animation frames
 		window.requestAnimationFrame(main);
-		
 		// Обновить и отрендерить игру
 		update(tframe);
 		render();
@@ -140,16 +139,13 @@ export function game() {
 		let dt = (tframe - lastframe) / 1000;
 		lastframe = tframe;
 
-
 		if (gamestate == gamestates.ready) {
 			// Игра готова для ввода игроком
 
 			// Проверка на окончание игры
 			if (moves.length <= 0) {
 				gameover = true;
-				
 			}
-
 		} else if (gamestate == gamestates.resolve) {
 			// Игра занята решениями и анимацией для совпадений, решает дела красиво короче
 			animationtime += dt;
@@ -163,7 +159,6 @@ export function game() {
 					if (coincidences.length > 0) {
 						// Добавляем очки к счету
 						countingScore();
-
 
 						// совпадения найдены, удаляем их
 						removecoincidences();
@@ -212,7 +207,6 @@ export function game() {
 						animationstate = 3;
 						animationtime = 0;
 					}
-
 					// Update moves and coincidences
 					findMoves();
 					findcoincidences();
@@ -222,30 +216,25 @@ export function game() {
 				if (animationtime > animationtimetotal) {
 					// Invalid swap, swap back
 					swap(currentmove.column1, currentmove.row1, currentmove.column2, currentmove.row2);
-
 					// Animation complete
 					gamestate = gamestates.ready;
 				}
 			}
-
 			// Update moves and coincidences
 			findMoves();
 			findcoincidences();
 		}
 	}
-
-
 	//делаем скор
 	function createScore() {
 		let scoreTXT = document.createElement('span');
 		piz.appendChild(scoreTXT);
+		scoreTXT.setAttribute('id', 'span1');
 		scoreTXT.innerHTML = `SCORE:`;
-
 	}
 	createScore();
 
 	//подсчет скора
-
 	function countingScore() {
 		for (let i = 0; i < coincidences.length; i++) {
 			score = score += 100;
@@ -260,7 +249,6 @@ export function game() {
 		document.getElementById('span').innerHTML = score;
 	}
 
-
 	function drawCenterText(text, x, y, width) {
 		let textdim = ctx.measureText(text);
 		ctx.fillText(text, x + (width - textdim.width) / 2, y);
@@ -273,15 +261,11 @@ export function game() {
 		// Render clusters
 		renderstone();
 		drawerDrawer();
-		
-	
 	}
 
-
-
-	function drawerDrawer(){
-		if(gameover == true) {
-				let levelwidth = config.columns * config.stoneWidth;
+	function drawerDrawer() {
+		if (gameover == true) {
+			let levelwidth = config.columns * config.stoneWidth;
 			let levelheight = config.rows * config.stoneHeight;
 			ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
 			ctx.fillRect(config.x, config.y, levelwidth, levelheight);
@@ -289,17 +273,14 @@ export function game() {
 			ctx.fillStyle = '#ffffff';
 			ctx.font = '24px Verdana';
 			drawCenterText('Game Over!', config.y, config.x + levelheight / 2 + 10, levelwidth);
-			
-	}
+		}
 	}
 
 	let ajaxbtn = document.getElementById('ajaxbtn');
-	ajaxbtn.addEventListener('click', function(){
-		let user = prompt('Введите свое имя','');
-		
+	ajaxbtn.addEventListener('click', function () {
+		let user = prompt('Введите свое имя', '');
 		let scores = score;
-		
-		scoresStorage.addValue(user, scores);
+		Scorege.addValue(user, scores);
 	});
 	showResult();
 
@@ -310,11 +291,7 @@ export function game() {
 		ctx.fillRect(0, 0, canvas.width, canvas.height);
 		ctx.fillStyle = '#e8eaec';
 		ctx.fillRect(1, 1, canvas.width - 2, canvas.height - 2);
-
-
 	}
-
-
 
 	// Render stone
 	function renderstone() {
@@ -322,19 +299,15 @@ export function game() {
 			for (let j = 0; j < config.rows; j++) {
 				// Get the shift of the tile for animation
 				let shift = config.stone[i][j].shift;
-
 				// Calculate the tile coordinates
 				let coord = getTileCoordinate(i, j, 0, (animationtime / animationtimetotal) * shift);
-
 				// Check if there is a tile present
 				if (config.stone[i][j].type >= 0) {
 					// Get the color of the tile
 					let col = stoneColors[config.stone[i][j].type];
-
 					// Draw the tile using the color
 					drawTile(coord.tilex, coord.tiley, col[0], col[1], col[2]);
 				}
-
 				// Draw the select tile
 				if (config.selectStone.select) {
 					if (config.selectStone.column == i && config.selectStone.row == j) {
@@ -350,21 +323,17 @@ export function game() {
 			// Calculate the x and y shift
 			let shiftx = currentmove.column2 - currentmove.column1;
 			let shifty = currentmove.row2 - currentmove.row1;
-
 			// First tile
 			let coord1 = getTileCoordinate(currentmove.column1, currentmove.row1, 0, 0);
 			let coord1shift = getTileCoordinate(currentmove.column1, currentmove.row1, (animationtime / animationtimetotal) * shiftx, (animationtime / animationtimetotal) * shifty);
 			let col1 = stoneColors[config.stone[currentmove.column1][currentmove.row1].type];
-
 			// Second tile
 			let coord2 = getTileCoordinate(currentmove.column2, currentmove.row2, 0, 0);
 			let coord2shift = getTileCoordinate(currentmove.column2, currentmove.row2, (animationtime / animationtimetotal) * -shiftx, (animationtime / animationtimetotal) * -shifty);
 			let col2 = stoneColors[config.stone[currentmove.column2][currentmove.row2].type];
-
 			// Draw a black background
 			drawTile(coord1.tilex, coord1.tiley, 0, 0, 0);
 			drawTile(coord2.tilex, coord2.tiley, 0, 0, 0);
-
 			// Change the order, depending on the animation state
 			if (animationstate == 2) {
 				// Draw the stone
@@ -398,16 +367,12 @@ export function game() {
 	function newGame() {
 		// Reset score
 		score = 0;
-
 		// Set the gamestate to ready
 		gamestate = gamestates.ready;
-
 		// Reset game over
 		gameover = false;
-
 		// Create the config
 		createconfig();
-
 		// Find initial coincidences and moves
 		findMoves();
 		findcoincidences();
@@ -416,10 +381,8 @@ export function game() {
 	// Create a random config
 	function createconfig() {
 		let done = false;
-
 		// Keep generating configs until it is correct
 		while (!done) {
-
 			// Create a config with random stone
 			for (let i = 0; i < config.columns; i++) {
 				for (let j = 0; j < config.rows; j++) {
@@ -429,10 +392,8 @@ export function game() {
 
 			// Resolve the coincidences
 			resolvecoincidences();
-
 			// Check if there are valid moves
 			findMoves();
-
 			// Done when there is a valid move
 			if (moves.length > 0) {
 				done = true;
@@ -455,10 +416,8 @@ export function game() {
 
 			// Remove coincidences
 			removecoincidences();
-
 			// Shift stone
 			shiftstone();
-
 			// Check if there are coincidences left
 			findcoincidences();
 		}
@@ -502,7 +461,6 @@ export function game() {
 							horizontal: true
 						});
 					}
-
 					matchlength = 1;
 				}
 			}
@@ -541,7 +499,6 @@ export function game() {
 							horizontal: false
 						});
 					}
-
 					matchlength = 1;
 				}
 			}
@@ -658,7 +615,6 @@ export function game() {
 						swap(i, j, i, j + shift);
 					}
 				}
-
 				// Reset shift
 				config.stone[i][j].shift = 0;
 			}
@@ -783,12 +739,9 @@ export function game() {
 				// Invalid tile
 				config.selectStone.select = false;
 			}
-
 			// начать перетаскивание
 			drag = true;
 		}
-
-
 	}
 
 	function onMouseUp(e) {
@@ -811,6 +764,4 @@ export function game() {
 	}
 
 	init();
-
-
 }
