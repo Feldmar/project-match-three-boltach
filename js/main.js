@@ -2,7 +2,8 @@
 
 let piz = document.getElementById('piz');
 import {ZAJAXStorage} from './ajax.js';
-let scoresStorage = new ZAJAXStorage();
+ export let scoresStorage = new ZAJAXStorage();
+import {showResult} from './script.js';
 game();
 export function game() {
 	let canvas = document.getElementById('mycanvas');
@@ -294,14 +295,13 @@ export function game() {
 
 	let ajaxbtn = document.getElementById('ajaxbtn');
 	ajaxbtn.addEventListener('click', function(){
-		let user = prompt('GHb','');
+		let user = prompt('Введите свое имя','');
 		
 		let scores = score;
+		
 		scoresStorage.addValue(user, scores);
 	});
-
-	
-
+	showResult();
 
 	// Draw a frame with a border
 	function drawFrame() {

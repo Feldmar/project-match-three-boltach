@@ -1,10 +1,11 @@
-ol{
+ol {
   display: flex;
   flex-direction: column;
   width: 65%;
   margin: auto;
 }
-h2{
+
+h2 {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
@@ -17,41 +18,48 @@ h2{
   font-family: Courier, monospace;
   text-decoration: rgb(238, 255, 0) wavy underline;
 }
-ol li{
+
+ol li {
   padding: 10px;
   color: rgb(188, 98, 33);
-  font-family:Courier New, monospace;
+  font-family: Courier New, monospace;
   font-weight: 600;
 }
-h1{
+
+h1 {
   display: flex;
   justify-content: center;
   color: rgb(149, 38, 125);
   font-size: 20px;
   font-family: Courier, monospace;
 }
-a { 
-  text-decoration: none; 
+
+a {
+  text-decoration: none;
   font-size: 18px;
   font-family: Segoe Script;
   font-weight: 900;
   color: rgb(23, 68, 163);
- }
- a:hover {
+}
+
+a:hover {
   text-decoration: rgb(128, 255, 0) wavy underline;
- } 
-ul{
+}
+
+ul {
   display: flex;
   justify-content: center;
   padding: 0;
-  
- }
- ul li{
-  list-style-type: none; 
+
+}
+
+ul li {
+  list-style-type: none;
   display: inline-flex;
   margin: auto;
- }
- .modal{
+}
+
+.modal {
   display: none;
   position: fixed;
   z-index: 1;
@@ -63,7 +71,7 @@ ul{
   overflow: auto;
 }
 
-.modal-content{
+.modal-content {
   display: flex;
   justify-content: center;
   backdrop-filter: blur(7px);
@@ -72,4 +80,8 @@ ul{
   border: 2px solid #67d402;
   border-radius: 15px;
   width: 200px;
+}
+#toplist{
+  display: flex;
+  justify-content: center;
 }

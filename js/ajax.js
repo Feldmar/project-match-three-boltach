@@ -1,5 +1,4 @@
 'use strict';
-
 export function ZAJAXStorage() {
   var Rhash = {};
   var url = 'https://fe.it-academy.by/AjaxStringStorage2.php';
@@ -34,12 +33,16 @@ export function ZAJAXStorage() {
         },
         success: callREs,
         error: errorHandler
+        
       });
 
       function callREs(res) {
         console.log('callREs: ' + res.result);
       }
     }
+
+
+    
   }
 
   function storeInfo(Rhash) {
@@ -90,6 +93,7 @@ export function ZAJAXStorage() {
   self.addValue = function (key, value) {
     Rhash[key] = value;
     storeInfo(Rhash);
+    
   };
 
   self.getKeys = function () {

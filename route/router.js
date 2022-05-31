@@ -1,6 +1,7 @@
 'use strict';
 import {game} from '../js/main.js';
-// import {get} from '../js/liderboard.js';
+
+import {showResult} from '../js/script.js';
 export function Router(routes) {
   try {
     if (!routes) {
@@ -54,8 +55,9 @@ Router.prototype = {
         if (this.readyState === 4 && this.status === 200) {
           scope.rootElem.innerHTML = this.responseText;
         }
+        showResult();
         game();
-        // get();
+        
       };
       xhttp.open('GET', url, true);
       xhttp.send();
