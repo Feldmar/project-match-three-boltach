@@ -1,5 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Satisfy&family=Sigmar+One&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Monoton&family=Satisfy&family=Sigmar+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
+
+body {
+  background-attachment: fixed;
+}
 
 ol {
   display: flex;
@@ -39,10 +44,10 @@ h1 {
 
 a {
   text-decoration: none;
-  font-size: 18px;
-  font-family: Segoe Script;
-  font-weight: 900;
-  color: rgb(23, 68, 163);
+  font-size: 25px;
+  font-family: 'Monoton', cursive;
+  font-weight: 500;
+  color: rgb(221, 53, 190);
 }
 
 a:hover {
@@ -53,7 +58,7 @@ ul {
   display: flex;
   justify-content: center;
   padding: 0;
-
+  margin: 5px;
 }
 
 ul li {
@@ -88,9 +93,14 @@ ul li {
 #toplist {
   display: flex;
   justify-content: center;
-  font-family: Verdana;
-  font-size: 15px;
+  font-family: 'Lobster', cursive;
+  font-size: 23px;
   word-wrap: break-word;
+  color: rgb(15, 176, 168);
+}
+
+#marker {
+  color: rgb(18, 119, 214);
 }
 
 #ajaxbtn {
@@ -117,20 +127,42 @@ ul li {
   color: #ed7bdc;
 }
 
-#span {
+#counting-score {
   font-family: 'Monoton', cursive;
   font-size: 25px;
   color: rgb(204, 134, 73);
-  padding: 5px;
   display: flex;
   justify-content: center
 }
 
-#span1 {
+#create-score {
   font-family: 'Sigmar One', cursive;
   font-size: 20px;
   color: rgb(222, 110, 218);
-  padding: 5px;
   display: flex;
   justify-content: center
+}
+
+@media(max-width:540px) {
+  ol li {
+    padding: 5px;
+    font-size: 15px;
+  }
+
+  h2 {
+    width: 80%;
+    font-size: 17px;
+    padding: 10px;
+  }
+
+  ol {
+    width: 80%;
+  }
+
+  #toplist {
+    font-size: 18px;
+  }
+  a {
+    font-size: 20px;
+  }
 }

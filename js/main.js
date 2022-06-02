@@ -1,17 +1,19 @@
 'use strict';
-let piz = document.getElementById('piz');
-import {
-	AJAXstorage
-} from './ajax.js';
+import {AJAXstorage} from './ajax.js';
+import {showResult} from './render.js';
+
 export let Scorege = new AJAXstorage();
-import {
-	showResult
-} from './script.js';
-game();
+let piz = document.getElementById('piz');
+
+window.onbeforeunload = function () {
+	game();
+	return false;
+};
+
 export function game() {
 	let canvas = document.getElementById('mycanvas');
 	if (!canvas) {
-		console.log('no');
+		console.log('Ищем канвас');
 		return;
 	}
 	let ctx = canvas.getContext('2d');
@@ -83,21 +85,23 @@ export function game() {
 	style();
 
 	//адаптив
-	let bodyWidth = window.innerWidth;
-	let bodyHeight = window.innerHeight;
-	console.log(bodyWidth);
-	if (bodyWidth <= 600) {
-		config.columns = 8;
-		config.rows = 8;
-		canvas.width = 405;
-		canvas.height = 405;
+	function adaptive() {
+		let bodyWidth = window.innerWidth;
+		console.log(bodyWidth);
+		if (bodyWidth <= 600) {
+			config.columns = 8;
+			config.rows = 8;
+			canvas.width = 405;
+			canvas.height = 405;
+		}
+		if (bodyWidth <= 513) {
+			config.columns = 6;
+			config.rows = 6;
+			canvas.width = 305;
+			canvas.height = 305;
+		}
 	}
-	if (bodyWidth <= 513) {
-		config.columns = 6;
-		config.rows = 6;
-		canvas.width = 305;
-		canvas.height = 305;
-	}
+	adaptive();
 
 	// Инициализируем игру
 	function init() {
@@ -111,7 +115,7 @@ export function game() {
 		for (let i = 0; i < config.columns; i++) {
 			config.stone[i] = [];
 			for (let j = 0; j < config.rows; j++) {
-				// Определяем тип плитки и параметр сдвига для анимации
+				// Определяем тип камня и параметр сдвига для анимации
 				config.stone[i][j] = {
 					type: 0,
 					shift: 0
@@ -139,29 +143,29 @@ export function game() {
 		let dt = (tframe - lastframe) / 1000;
 		lastframe = tframe;
 
-		if (gamestate == gamestates.ready) {
+		if (gamestate === gamestates.ready) {
 			// Игра готова для ввода игроком
 
 			// Проверка на окончание игры
 			if (moves.length <= 0) {
 				gameover = true;
 			}
-		} else if (gamestate == gamestates.resolve) {
+		} else if (gamestate === gamestates.resolve) {
 			// Игра занята решениями и анимацией для совпадений, решает дела красиво короче
 			animationtime += dt;
 
-			if (animationstate == 0) {
+			if (animationstate === 0) {
 				// совпадения нужно найти и удалить
 				if (animationtime > animationtimetotal) {
 					// Находим совпадения
-					findcoincidences();
+					findCoincidences();
 
 					if (coincidences.length > 0) {
 						// Добавляем очки к счету
 						countingScore();
 
 						// совпадения найдены, удаляем их
-						removecoincidences();
+						removeCoincidences();
 
 						// двигаем камни
 						animationstate = 1;
@@ -175,61 +179,61 @@ export function game() {
 				// камень нужно сдвинуть
 				if (animationtime > animationtimetotal) {
 					// двигаем камень
-					shiftstone();
+					shiftStone();
 
 					// Ищем новые совпадения
 					animationstate = 0;
 					animationtime = 0;
 
 					// Проверяем, есть ли новые совпадения
-					findcoincidences();
+					findCoincidences();
 					if (coincidences.length <= 0) {
 						// Анимация завершена
 						gamestate = gamestates.ready;
 					}
 				}
-			} else if (animationstate == 2) {
-				// Swapping stone animation
+			} else if (animationstate === 2) {
+				// Анимация замены камня
 				if (animationtime > animationtimetotal) {
-					// Swap the stone
+					// Поменять камень
 					swap(currentmove.column1, currentmove.row1, currentmove.column2, currentmove.row2);
 
-					// Check if the swap made a cluster
-					findcoincidences();
+					// Проверяем, сделал ли свaп кластер
+					findCoincidences();
 					if (coincidences.length > 0) {
-						// Valid swap, found one or more coincidences
-						// Prepare animation states
+						// Валидный обмен, найдено одно или несколько совпадений
+						// Подготавливаем состояния анимации
 						animationstate = 0;
 						animationtime = 0;
 						gamestate = gamestates.resolve;
 					} else {
-						// Invalid swap, Rewind swapping animation
+						// Неверный свaп, анимация перемотки назад
 						animationstate = 3;
 						animationtime = 0;
 					}
-					// Update moves and coincidences
+					// Обновление ходов и совпадений
 					findMoves();
-					findcoincidences();
+					findCoincidences();
 				}
-			} else if (animationstate == 3) {
-				// Rewind swapping animation
+			} else if (animationstate === 3) {
+				// Перемотать анимацию замены назад
 				if (animationtime > animationtimetotal) {
-					// Invalid swap, swap back
+					// Неверный свaп, свaп обратно
 					swap(currentmove.column1, currentmove.row1, currentmove.column2, currentmove.row2);
-					// Animation complete
+					// Анимация завершена
 					gamestate = gamestates.ready;
 				}
 			}
-			// Update moves and coincidences
+			// Обновление ходов и совпадений
 			findMoves();
-			findcoincidences();
+			findCoincidences();
 		}
 	}
 	//делаем скор
 	function createScore() {
 		let scoreTXT = document.createElement('span');
 		piz.appendChild(scoreTXT);
-		scoreTXT.setAttribute('id', 'span1');
+		scoreTXT.setAttribute('id', 'create-score');
 		scoreTXT.innerHTML = `SCORE:`;
 	}
 	createScore();
@@ -245,8 +249,8 @@ export function game() {
 		}
 		let scoreSpan = document.createElement('span');
 		piz.appendChild(scoreSpan);
-		scoreSpan.setAttribute('id', 'span');
-		document.getElementById('span').innerHTML = score;
+		scoreSpan.setAttribute('id', 'counting-score');
+		document.getElementById('counting-score').innerHTML = score;
 	}
 
 	function drawCenterText(text, x, y, width) {
@@ -254,17 +258,17 @@ export function game() {
 		ctx.fillText(text, x + (width - textdim.width) / 2, y);
 	}
 
-	// Render the game
+	// Визуализируем игру
 	function render() {
-		// Draw the frame
+		// Рисуем рамку
 		drawFrame();
-		// Render clusters
-		renderstone();
+		// Отрисовка кластеров
+		renderStone();
 		drawerDrawer();
 	}
 
 	function drawerDrawer() {
-		if (gameover == true) {
+		if (gameover === true) {
 			let levelwidth = config.columns * config.stoneWidth;
 			let levelheight = config.rows * config.stoneHeight;
 			ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
@@ -284,70 +288,70 @@ export function game() {
 	});
 	showResult();
 
-	// Draw a frame with a border
+	// Рисуем рамку с рамкой)))
 	function drawFrame() {
-		// Draw background and a border
+		// Рисуем фон и границу
 		ctx.fillStyle = '#d0d0d0';
 		ctx.fillRect(0, 0, canvas.width, canvas.height);
 		ctx.fillStyle = '#e8eaec';
 		ctx.fillRect(1, 1, canvas.width - 2, canvas.height - 2);
 	}
 
-	// Render stone
-	function renderstone() {
+	// Рендеринг камня
+	function renderStone() {
 		for (let i = 0; i < config.columns; i++) {
 			for (let j = 0; j < config.rows; j++) {
-				// Get the shift of the tile for animation
+				// Получаем сдвиг камня для анимации
 				let shift = config.stone[i][j].shift;
-				// Calculate the tile coordinates
+				// Рассчитываем координаты камня
 				let coord = getTileCoordinate(i, j, 0, (animationtime / animationtimetotal) * shift);
-				// Check if there is a tile present
+				// Проверяем, есть ли камень
 				if (config.stone[i][j].type >= 0) {
-					// Get the color of the tile
+					// Получаем цвет камня
 					let col = stoneColors[config.stone[i][j].type];
-					// Draw the tile using the color
+					// Рисуем камень цветом
 					drawTile(coord.tilex, coord.tiley, col[0], col[1], col[2]);
 				}
-				// Draw the select tile
+				// Рисуем камень выбора
 				if (config.selectStone.select) {
-					if (config.selectStone.column == i && config.selectStone.row == j) {
-						// Draw a red tile
+					if (config.selectStone.column === i && config.selectStone.row === j) {
+						// Рисуем красный камень
 						drawTile(coord.tilex, coord.tiley, 255, 0, 0);
 					}
 				}
 			}
 		}
 
-		// Render the swap animation
-		if (gamestate == gamestates.resolve && (animationstate == 2 || animationstate == 3)) {
-			// Calculate the x and y shift
+		// Визуализировать анимацию подкачки
+		if (gamestate === gamestates.resolve && (animationstate === 2 || animationstate === 3)) {
+			// Вычисляем сдвиг по осям x и y
 			let shiftx = currentmove.column2 - currentmove.column1;
 			let shifty = currentmove.row2 - currentmove.row1;
-			// First tile
+			// Первый камень
 			let coord1 = getTileCoordinate(currentmove.column1, currentmove.row1, 0, 0);
 			let coord1shift = getTileCoordinate(currentmove.column1, currentmove.row1, (animationtime / animationtimetotal) * shiftx, (animationtime / animationtimetotal) * shifty);
 			let col1 = stoneColors[config.stone[currentmove.column1][currentmove.row1].type];
-			// Second tile
+			// Второй камеь
 			let coord2 = getTileCoordinate(currentmove.column2, currentmove.row2, 0, 0);
 			let coord2shift = getTileCoordinate(currentmove.column2, currentmove.row2, (animationtime / animationtimetotal) * -shiftx, (animationtime / animationtimetotal) * -shifty);
 			let col2 = stoneColors[config.stone[currentmove.column2][currentmove.row2].type];
-			// Draw a black background
+			// Рисуем черный фон
 			drawTile(coord1.tilex, coord1.tiley, 0, 0, 0);
 			drawTile(coord2.tilex, coord2.tiley, 0, 0, 0);
-			// Change the order, depending on the animation state
-			if (animationstate == 2) {
-				// Draw the stone
+			// Изменяем порядок в зависимости от состояния анимации
+			if (animationstate === 2) {
+				// Рисуем камень
 				drawTile(coord1shift.tilex, coord1shift.tiley, col1[0], col1[1], col1[2]);
 				drawTile(coord2shift.tilex, coord2shift.tiley, col2[0], col2[1], col2[2]);
 			} else {
-				// Draw the stone
+				// Рисуем камень
 				drawTile(coord2shift.tilex, coord2shift.tiley, col2[0], col2[1], col2[2]);
 				drawTile(coord1shift.tilex, coord1shift.tiley, col1[0], col1[1], col1[2]);
 			}
 		}
 	}
 
-	// Get the tile coordinate
+	// Получаем координату камня
 	function getTileCoordinate(column, row, columnoffset, rowoffset) {
 		let tilex = config.x + (column + columnoffset) * config.stoneWidth;
 		let tiley = config.y + (row + rowoffset) * config.stoneHeight;
@@ -357,103 +361,103 @@ export function game() {
 		};
 	}
 
-	// Draw a tile with a color
+	// Рисуем камень цветом
 	function drawTile(x, y, r, g, b) {
 		ctx.fillStyle = 'rgb(' + r + ',' + g + ',' + b + ')';
 		ctx.fillRect(x + 2, y + 2, config.stoneWidth - 4, config.stoneHeight - 4);
 	}
 
-	// Start a new game
+	// Начать новую игру
 	function newGame() {
-		// Reset score
+		// Сбросить счет
 		score = 0;
-		// Set the gamestate to ready
+		// Устанавливаем состояние игры в состояние готовности
 		gamestate = gamestates.ready;
-		// Reset game over
+		// Сброс игры окончен
 		gameover = false;
-		// Create the config
+		// Создаем конфиг
 		createconfig();
-		// Find initial coincidences and moves
+		// Находим начальные совпадения и ходы
 		findMoves();
-		findcoincidences();
+		findCoincidences();
 	}
 
-	// Create a random config
+	// Создаем случайный конфиг
 	function createconfig() {
 		let done = false;
-		// Keep generating configs until it is correct
+		// Продолжаем генерировать конфиги, пока они не станут правильными
 		while (!done) {
-			// Create a config with random stone
+			// Создаем конфиг со случайным камнем
 			for (let i = 0; i < config.columns; i++) {
 				for (let j = 0; j < config.rows; j++) {
 					config.stone[i][j].type = getRandomTile();
 				}
 			}
 
-			// Resolve the coincidences
-			resolvecoincidences();
-			// Check if there are valid moves
+			// Разрешить совпадения
+			resolveCoincidences();
+			// Проверяем, есть ли допустимые ходы
 			findMoves();
-			// Done when there is a valid move
+			// Готово, когда есть правильный ход
 			if (moves.length > 0) {
 				done = true;
 			}
 		}
 	}
 
-	// Get a random tile
+	// Получаем случайный камень
 	function getRandomTile() {
 		return Math.floor(Math.random() * stoneColors.length);
 	}
 
-	// Remove coincidences and insert stone
-	function resolvecoincidences() {
-		// Check for coincidences
-		findcoincidences();
+	// Убираем совпадения и вставляем камень
+	function resolveCoincidences() {
+		// Проверяем на совпадения
+		findCoincidences();
 
-		// While there are coincidences left
+		// Пока есть совпадения
 		while (coincidences.length > 0) {
 
-			// Remove coincidences
-			removecoincidences();
-			// Shift stone
-			shiftstone();
-			// Check if there are coincidences left
-			findcoincidences();
+			// Удаляем совпадения
+			removeCoincidences();
+			// Сдвиг камня
+			shiftStone();
+			// Проверяем, остались ли совпадения
+			findCoincidences();
 		}
 	}
 
-	// Find coincidences in the config
-	function findcoincidences() {
-		// Reset coincidences
+	// Находим совпадения в конфиге
+	function findCoincidences() {
+		// Сброс совпадений
 		coincidences = [];
 
-		// Find horizontal coincidences
+		// Находим совпадения по горизонтали
 		for (let j = 0; j < config.rows; j++) {
-			// Start with a single tile, cluster of 1
+			// Начать с одного камня, кластер из 1
 			let matchlength = 1;
 			for (let i = 0; i < config.columns; i++) {
 				let checkcluster = false;
 
-				if (i == config.columns - 1) {
-					// Last tile
+				if (i === config.columns - 1) {
+					// Последний камень
 					checkcluster = true;
 				} else {
-					// Check the type of the next tile
-					if (config.stone[i][j].type == config.stone[i + 1][j].type &&
+					// Проверяем тип следующего камня
+					if (config.stone[i][j].type === config.stone[i + 1][j].type &&
 						config.stone[i][j].type != -1) {
-						// Same type as the previous tile, increase matchlength
+						// Тот же тип, что и у предыдущего камня, увеличьте длину совпадения
 						matchlength += 1;
 					} else {
-						// Different type
+						// Другой тип
 						checkcluster = true;
 					}
 				}
 
-				// Check if there was a cluster
+				// Проверяем, был ли кластер
 				if (checkcluster) {
 					if (matchlength >= 3) {
-						// Found a horizontal cluster
+						// Найден горизонтальный кластер
 						coincidences.push({
 							column: i + 1 - matchlength,
 							row: j,
@@ -466,32 +470,32 @@ export function game() {
 			}
 		}
 
-		// Find vertical coincidences
+		// Находим вертикальные совпадения
 		for (let i = 0; i < config.columns; i++) {
-			// Start with a single tile, cluster of 1
+			// Начать с одного камня, кластер из 1
 			let matchlength = 1;
 			for (let j = 0; j < config.rows; j++) {
 				let checkcluster = false;
 
-				if (j == config.rows - 1) {
-					// Last tile
+				if (j === config.rows - 1) {
+					// Последний камень
 					checkcluster = true;
 				} else {
-					// Check the type of the next tile
-					if (config.stone[i][j].type == config.stone[i][j + 1].type &&
+					// Проверяем тип следующего камня
+					if (config.stone[i][j].type === config.stone[i][j + 1].type &&
 						config.stone[i][j].type != -1) {
-						// Same type as the previous tile, increase matchlength
+						// Тот же тип, что и у предыдущего камня, увеличьте длину совпадения
 						matchlength += 1;
 					} else {
-						// Different type
+						// Другой тип
 						checkcluster = true;
 					}
 				}
 
-				// Check if there was a cluster
+				// Проверяем, был ли кластер
 				if (checkcluster) {
 					if (matchlength >= 3) {
-						// Found a vertical cluster
+						// Найден вертикальный кластер
 						coincidences.push({
 							column: i,
 							row: j + 1 - matchlength,
@@ -505,22 +509,22 @@ export function game() {
 		}
 	}
 
-	// Find available moves
+	// Находим доступные ходы
 	function findMoves() {
-		// Reset moves
+		// Сбросить ходы
 		moves = [];
 
-		// Check horizontal swaps
+		// Проверяем горизонтальные свапы
 		for (let j = 0; j < config.rows; j++) {
 			for (let i = 0; i < config.columns - 1; i++) {
-				// Swap, find coincidences and swap back
+				// Поменять местами, найти совпадения и поменять местами обратно
 				swap(i, j, i + 1, j);
-				findcoincidences();
+				findCoincidences();
 				swap(i, j, i + 1, j);
 
-				// Check if the swap made a cluster
+				// Проверяем, сделал ли своп кластер
 				if (coincidences.length > 0) {
-					// Found a move
+					// Найден ход
 					moves.push({
 						column1: i,
 						row1: j,
@@ -531,17 +535,17 @@ export function game() {
 			}
 		}
 
-		// Check vertical swaps
+		// Проверяем вертикальные свопы
 		for (let i = 0; i < config.columns; i++) {
 			for (let j = 0; j < config.rows - 1; j++) {
-				// Swap, find coincidences and swap back
+				// Поменять местами, найти совпадения и поменять местами обратно
 				swap(i, j, i, j + 1);
-				findcoincidences();
+				findCoincidences();
 				swap(i, j, i, j + 1);
 
-				// Check if the swap made a cluster
+				// Проверяем, сделал ли свап кластер
 				if (coincidences.length > 0) {
-					// Found a move
+					// Найден ход
 					moves.push({
 						column1: i,
 						row1: j,
@@ -552,12 +556,12 @@ export function game() {
 			}
 		}
 
-		// Reset coincidences
+		// Сброс совпадений
 		coincidences = [];
 	}
 
-	// Loop over the cluster stone and execute a function
-	function loopcoincidences(func) {
+	// Перебираем кластерный камень и выполняем функцию
+	function loopCoincidences(func) {
 		for (let i = 0; i < coincidences.length; i++) {
 			//  { column, row, length, horizontal }
 			let cluster = coincidences[i];
@@ -575,61 +579,61 @@ export function game() {
 		}
 	}
 
-	// Remove the coincidences
-	function removecoincidences() {
-		// Change the type of the stone to -1, indicating a removed tile
-		loopcoincidences(function (index, column, row, cluster) {
+	// Удаляем совпадения
+	function removeCoincidences() {
+		// Изменяем тип камня на -1, что указывает на удаленный камень
+		loopCoincidences(function (index, column, row, cluster) {
 			config.stone[column][row].type = -1;
 		});
 
-		// Calculate how much a tile should be shifted downwards
+		// Рассчитываем, насколько камень должен быть смещен вниз
 		for (let i = 0; i < config.columns; i++) {
 			let shift = 0;
 			for (let j = config.rows - 1; j >= 0; j--) {
-				// Loop from bottom to top
+				// Цикл снизу вверх
 				if (config.stone[i][j].type == -1) {
-					// Tile is removed, increase shift
+					// Камень удаляется, увеличиваем сдвиг
 					shift++;
 					config.stone[i][j].shift = 0;
 				} else {
-					// Set the shift
+					// Установить сдвиг
 					config.stone[i][j].shift = shift;
 				}
 			}
 		}
 	}
 
-	// Shift stone and insert new stone
-	function shiftstone() {
-		// Shift stone
+	// Сдвинуть камень и вставить новый камень
+	function shiftStone() {
+		// Сдвиг камня
 		for (let i = 0; i < config.columns; i++) {
 			for (let j = config.rows - 1; j >= 0; j--) {
-				// Loop from bottom to top
-				if (config.stone[i][j].type == -1) {
-					// Insert new random tile
+				// Цикл снизу вверх
+				if (config.stone[i][j].type === -1) {
+					// Вставляем новый случайный камень
 					config.stone[i][j].type = getRandomTile();
 				} else {
-					// Swap tile to shift it
+					// Поменяйте камни местами, чтобы сдвинуть их
 					let shift = config.stone[i][j].shift;
 					if (shift > 0) {
 						swap(i, j, i, j + shift);
 					}
 				}
-				// Reset shift
+				// Сбросить смену
 				config.stone[i][j].shift = 0;
 			}
 		}
 	}
 
-	// Get the tile under the mouse
+	// Получить камень под мышью
 	function getMouseTile(pos) {
-		// Calculate the index of the tile
+		// Рассчитываем индекс камня
 		let tx = Math.floor((pos.x - config.x) / config.stoneWidth);
 		let ty = Math.floor((pos.y - config.y) / config.stoneHeight);
 
-		// Check if the tile is valid
+		// Проверяем, действителен ли камень
 		if (tx >= 0 && tx < config.columns && ty >= 0 && ty < config.rows) {
-			// Tile is valid
+			// Камень действителен
 			return {
 				valid: true,
 				x: tx,
@@ -637,7 +641,7 @@ export function game() {
 			};
 		}
 
-		// No valid tile
+		// Нет допустимого камня
 		return {
 			valid: false,
 			x: 0,
@@ -645,27 +649,27 @@ export function game() {
 		};
 	}
 
-	// Check if two stone can be swapped
+	// Проверяем, можно ли поменять местами два камня
 	function canSwap(x1, y1, x2, y2) {
-		// Check if the tile is a direct neighbor of the select tile
-		if ((Math.abs(x1 - x2) == 1 && y1 == y2) ||
-			(Math.abs(y1 - y2) == 1 && x1 == x2)) {
+		// Проверяем, является ли камень прямым соседом выбранного камня
+		if ((Math.abs(x1 - x2) === 1 && y1 === y2) ||
+			(Math.abs(y1 - y2) === 1 && x1 === x2)) {
 			return true;
 		}
 
 		return false;
 	}
 
-	// Swap two stone in the config
+	// Поменять местами два камня в конфиге
 	function swap(x1, y1, x2, y2) {
 		let typeswap = config.stone[x1][y1].type;
 		config.stone[x1][y1].type = config.stone[x2][y2].type;
 		config.stone[x2][y2].type = typeswap;
 	}
 
-	// Swap two stone as a player action
+	// Поменять местами два камня как действие игрока
 	function mouseSwap(c1, r1, c2, r2) {
-		// Save the current move
+		// Сохраняем текущий ход
 		currentmove = {
 			column1: c1,
 			row1: r1,
@@ -673,70 +677,70 @@ export function game() {
 			row2: r2
 		};
 
-		// Deselect
+		// Отменить выбор
 		config.selectStone.select = false;
 
-		// Start animation
+		// Запустить анимацию
 		animationstate = 2;
 		animationtime = 0;
 		gamestate = gamestates.resolve;
 	}
 
-	// On mouse movement
+	// При движении мыши
 	function onMouseMove(e) {
-		// Get the mouse position
+		// Получить позицию мыши
 		let pos = getMousePos(canvas, e);
 
-		// Check if we are dragging with a tile select
+		// Проверяем, перетаскиваем ли мы камень select
 		if (drag && config.selectStone.select) {
-			// Get the tile under the mouse
+			// Получить камень под мышью
 			let mt = getMouseTile(pos);
 			if (mt.valid) {
-				// Valid tile
+				// Действительный камень
 
-				// Check if the stone can be swapped
+				// Проверяем, можно ли поменять камень
 				if (canSwap(mt.x, mt.y, config.selectStone.column, config.selectStone.row)) {
-					// Swap the stone
+					// Поменять камень
 					mouseSwap(mt.x, mt.y, config.selectStone.column, config.selectStone.row);
 				}
 			}
 		}
 	}
 
-	// On mouse button click
+	// При нажатии кнопки мыши
 	function onMouseDown(e) {
-		// Get the mouse position
+		// Получить позицию мыши
 		let pos = getMousePos(canvas, e);
 
-		// Start dragging
+		// Начать перетаскивание
 		if (!drag) {
-			// Get the tile under the mouse
+			// Получить камень под мышью
 			let mt = getMouseTile(pos);
 
 			if (mt.valid) {
-				// Valid tile
+				// Действительный камень
 				let swapped = false;
 				if (config.selectStone.select) {
-					if (mt.x == config.selectStone.column && mt.y == config.selectStone.row) {
-						// Same tile select, deselect
+					if (mt.x === config.selectStone.column && mt.y === config.selectStone.row) {
+						// Выбор того же камня, отмена выбора
 						config.selectStone.select = false;
 						drag = true;
 						return;
 					} else if (canSwap(mt.x, mt.y, config.selectStone.column, config.selectStone.row)) {
-						// stone can be swapped, swap the stone
+						// камень можно поменять местами, поменять местами камень
 						mouseSwap(mt.x, mt.y, config.selectStone.column, config.selectStone.row);
 						swapped = true;
 					}
 				}
 
 				if (!swapped) {
-					// Set the new select tile
+					// Установить новый выбранный камень 
 					config.selectStone.column = mt.x;
 					config.selectStone.row = mt.y;
 					config.selectStone.select = true;
 				}
 			} else {
-				// Invalid tile
+				// Неверный камень
 				config.selectStone.select = false;
 			}
 			// начать перетаскивание
