@@ -1,10 +1,10 @@
 'use strict';
-import {game} from '../js/main.js';
-import {showResult} from '../js/script.js';
+import {game} from '../main.js';
+import {showResult} from '../render.js';
 export function Router(routes) {
   try {
     if (!routes) {
-      throw 'error: routes param is mandatory';
+      new Error('error: routes param is mandatory');
     }
     this.constructor(routes);
     this.initialization();
@@ -48,8 +48,8 @@ Router.prototype = {
   },
   goToRoute: function (htmlName) {
     (function (scope) {
-      let url = './views/' + htmlName,
-        xhttp = new XMLHttpRequest();
+      let url = './views/' + htmlName;
+      let xhttp = new XMLHttpRequest();
       xhttp.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
           scope.rootElem.innerHTML = this.responseText;

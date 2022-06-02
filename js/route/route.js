@@ -9,7 +9,6 @@ function Route(name, htmlName, defaultRoute) {
     console.error(e);
   }
 }
-
 Route.prototype = {
   name: undefined,
   htmlName: undefined,

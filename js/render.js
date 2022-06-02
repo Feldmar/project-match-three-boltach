@@ -1,13 +1,11 @@
 'use strict';
+import {Scorege} from './main.js';
 let replaceBackground = function () {
   document.body.style.backgroundImage = 'url(./svg/background.svg)';
-  document.body.style.backgroundRepeat = 'no-repeat';
-  document.body.style.backgroundSize = 'cover';
-  document.body.style.margin = '0';
+  document.body.style.margin = '0 0';
 };
 document.addEventListener('DOMContentLoaded', replaceBackground);
 
-import {Scorege} from './main.js';
 export function showResult() {
   let leaderboard = document.getElementById('leaderboard');
   if (leaderboard) {
@@ -15,8 +13,9 @@ export function showResult() {
     let resultHTML = '';
     var keys = Object.keys(hash);
     keys.forEach(key => {
-      resultHTML += `<span id="toplist">User: ${key} : Score: ${hash[key]}</span> <br>`;
+      resultHTML += `<div id="toplist"> <span id="marker"> User: </span> ${key} : <span id="marker"> Score: </span> ${hash[key]}</div> <br>`;
       leaderboard.innerHTML = resultHTML;
     });
   }
 }
+

@@ -5,7 +5,7 @@ import {Router} from './router.js';
     let router = new Router([
       new Route('newgame', 'newgame.html'),
       new Route('top', 'top.html'),
-      new Route('manual', 'manual.html'),
+      new Route('manual', 'manual.html', true),
     ]);
   }
   initialization();
